@@ -1,0 +1,121 @@
+name: Build Enterprise AI Training Deck
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tmp/enterprise-ai-deck/**'
+      - '.github/workflows/build-enterprise-ai-deck.yml'
+
+jobs:
+  build-deck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: tmp/enterprise-ai-deck/package.json
+
+      - name: Install dependencies
+        working-directory: tmp/enterprise-ai-deck
+        run: npm install --no-audit --no-fund
+
+      - name: Normalize slide variable references
+        working-directory: tmp/enterprise-ai-deck
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('generate-deck.mjs')
+          lines = p.read_text().splitlines()
+          out = []
+          current_slide = None
+          for line in lines:
+              if re.match(r'^function\s+\w+\s*\(', line):
+                  current_slide = None
+              m = re.match(r'^(\s*)const\s+(\w+)\s*=\s*pptx\.addSlide\(\);', line)
+              if m:
+                  current_slide = m.group(2)
+              if current_slide and current_slide != 'slide' and 'slide.' in line:
+                  line = line.replace('slide.', f'{current_slide}.')
+              out.append(line)
+          p.write_text('\n'.join(out) + '\n')
+          PY
+
+      - name: Generate editable PPTX
+        working-directory: tmp/enterprise-ai-deck
+        run: node generate-deck.mjs
+
+      - name: Validate PPTX package and slide count
+        working-directory: tmp/enterprise-ai-deck
+        run: |
+          unzip -t '企业AI转型与应用实践_完整培训课件_V1.pptx'
+          python - <<'PY'
+          import zipfile, re
+          path = '企业AI转型与应用实践_完整培训课件_V1.pptx'
+          with zipfile.ZipFile(path) as z:
+              slides = [n for n in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml', n)]
+              print('SLIDE_COUNT=', len(slides))
+              if len(slides) < 70:
+                  raise SystemExit(f'Expected at least 70 slides, got {len(slides)}')
+          PY
+
+      - name: Prepare direct-open PPTX package
+        working-directory: tmp/enterprise-ai-deck
+        run: |
+          rm -rf pptx-package
+          mkdir -p pptx-package
+          unzip -q '企业AI转型与应用实践_完整培训课件_V1.pptx' -d pptx-package
+          test -f 'pptx-package/[Content_Types].xml'
+          test -f 'pptx-package/ppt/presentation.xml'
+
+      - name: Upload normal deck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enterprise-ai-training-deck
+          path: tmp/enterprise-ai-deck/企业AI转型与应用实践_完整培训课件_V1.pptx
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload direct-open PPTX package artifact
+        id: direct_pptx
+        uses: actions/upload-artifact@v4
+        with:
+          name: enterprise-ai-training-deck-direct-pptx
+          path: tmp/enterprise-ai-deck/pptx-package/**
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 7
+
+      - name: Validate downloaded artifact is a direct-open PPTX
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARTIFACT_ID: ${{ steps.direct_pptx.outputs.artifact-id }}
+        run: |
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip" \
+            -o /tmp/direct-open.pptx
+          unzip -t /tmp/direct-open.pptx
+          unzip -l /tmp/direct-open.pptx | grep -F '[Content_Types].xml'
+          unzip -l /tmp/direct-open.pptx | grep -F 'ppt/presentation.xml'
+          python - <<'PY'
+          import re, zipfile
+          path='/tmp/direct-open.pptx'
+          with zipfile.ZipFile(path) as z:
+              names=z.namelist()
+              assert '[Content_Types].xml' in names
+              assert 'ppt/presentation.xml' in names
+              slides=[n for n in names if re.fullmatch(r'ppt/slides/slide\d+\.xml',n)]
+              print('DIRECT_OPEN_SLIDE_COUNT=',len(slides))
+              assert len(slides) == 91
+          PY

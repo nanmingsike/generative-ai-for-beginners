@@ -1,0 +1,14 @@
+{
+  "name": "enterprise-ai-deck",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node generate-deck.mjs"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "pptxgenjs": "^3.12.0"
+  }
+}
