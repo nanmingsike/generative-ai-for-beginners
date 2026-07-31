@@ -26,18 +26,29 @@ jobs:
         working-directory: tmp/enterprise-ai-deck
         run: npm install --no-audit --no-fund
 
-      - name: Apply generator hotfixes
+      - name: Normalize slide variable references
         working-directory: tmp/enterprise-ai-deck
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
+
           p = Path('generate-deck.mjs')
-          s = p.read_text()
-          s = s.replace("    slide.addShape(pptx.ShapeType.chevron, { x, y: l.y, w: l.w, h: 0.62, fill: { color: l.c, transparency: 60 + i * 3 }, line: { color: l.c, width: 1 } });", "    four.addShape(pptx.ShapeType.chevron, { x, y: l.y, w: l.w, h: 0.62, fill: { color: l.c, transparency: 60 + i * 3 }, line: { color: l.c, width: 1 } });")
-          s = s.replace("    slide.addText(l.t, { x: x + 0.28, y: l.y + 0.12, w: l.w - 2.4, h: 0.28, fontFace: FONT, fontSize: 12.5, bold: true, color: C.white, margin: 0, fit: 'shrink' });", "    four.addText(l.t, { x: x + 0.28, y: l.y + 0.12, w: l.w - 2.4, h: 0.28, fontFace: FONT, fontSize: 12.5, bold: true, color: C.white, margin: 0, fit: 'shrink' });")
-          s = s.replace("    slide.addText(l.s, { x: x + l.w - 2.2, y: l.y + 0.12, w: 1.65, h: 0.26, fontFace: FONT, fontSize: 9, color: C.text, margin: 0, align: 'right', fit: 'shrink' });", "    four.addText(l.s, { x: x + l.w - 2.2, y: l.y + 0.12, w: 1.65, h: 0.26, fontFace: FONT, fontSize: 9, color: C.text, margin: 0, align: 'right', fit: 'shrink' });")
-          s = s.replace("  fs2.forEach(f => { const x = (13.333 - f.w) / 2; slide.addShape(pptx.ShapeType.chevron, { x, y: f.y, w: f.w, h: 0.72, fill: { color: f.c, transparency: 57 }, line: { color: f.c, width: 1 } }); slide.addText(f.t, { x: x + 0.35, y: f.y + 0.18, w: f.w - 0.7, h: 0.3, fontFace: FONT, fontSize: 12, bold: true, color: C.white, align: 'center', margin: 0, fit: 'shrink' }); });", "  fs2.forEach(f => { const x = (13.333 - f.w) / 2; funnel.addShape(pptx.ShapeType.chevron, { x, y: f.y, w: f.w, h: 0.72, fill: { color: f.c, transparency: 57 }, line: { color: f.c, width: 1 } }); funnel.addText(f.t, { x: x + 0.35, y: f.y + 0.18, w: f.w - 0.7, h: 0.3, fontFace: FONT, fontSize: 12, bold: true, color: C.white, align: 'center', margin: 0, fit: 'shrink' }); });")
-          p.write_text(s)
+          lines = p.read_text().splitlines()
+          out = []
+          current_slide = None
+
+          for line in lines:
+              if re.match(r'^function\s+\w+\s*\(', line):
+                  current_slide = None
+              m = re.match(r'^(\s*)const\s+(\w+)\s*=\s*pptx\.addSlide\(\);', line)
+              if m:
+                  current_slide = m.group(2)
+              if current_slide and current_slide != 'slide' and 'slide.' in line:
+                  line = line.replace('slide.', f'{current_slide}.')
+              out.append(line)
+
+          p.write_text('\n'.join(out) + '\n')
           PY
 
       - name: Generate editable PPTX
