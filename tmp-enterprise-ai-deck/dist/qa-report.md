@@ -1,0 +1,105 @@
+# QA Report
+
+- Slide count: 95
+- Metadata records: 95
+- Placeholders/TBD: 0
+- Theme: dark navy / cyan / blue / purple / green
+- Editable vector slides: yes
+- Illustrative cases labeled: yes
+
+## Slide list
+- 01 | Opening | 企业AI转型与应用实践
+- 02 | OPENING | AI正在改变工作的基本方式
+- 03 | OPENING | 三次生产力跃迁
+- 04 | OPENING | 为什么今天的AI和过去不同？
+- 05 | OPENING | 今天，我们要回答三个问题
+- 06 | OPENING | 整门课程的主线
+- 07 | Module 1 | 理解 AI
+- 08 | MODULE 1｜能力进化 01 | AI最初只有一个“大脑”
+- 09 | MODULE 1｜能力进化 02 | AI获得上下文：开始理解当前任务
+- 10 | MODULE 1｜能力进化 03 | AI获得“眼睛”：开始看见真实世界
+- 11 | MODULE 1｜能力进化 04 | AI获得知识来源：从猜测到基于事实
+- 12 | MODULE 1｜能力进化 05 | AI获得“手脚”：开始执行动作
+- 13 | MODULE 1｜能力进化 06 | AI获得记忆：从一次合作到长期伙伴
+- 14 | MODULE 1｜能力进化 07 | AI获得方法：从聪明到可靠
+- 15 | MODULE 1｜能力进化 08 | AI形成执行循环：成为 Agent
+- 16 | MODULE 1｜能力进化 09 | 给 AI 一个“工作环境”：成为数字员工
+- 17 | MODULE 1｜能力总览 | 从“会回答”到“能工作”
+- 18 | MODULE 1｜能力边界 | 但 AI 仍然不是万能员工
+- 19 | MODULE 1｜信任与控制 | 能力越强，人工控制必须越精细
+- 20 | MODULE 1｜人机协同 | 最好的AI，不是替代人，而是放大人
+- 21 | MODULE 1｜模块过渡 | 从理解 AI，到应用 AI
+- 22 | Module 2 | 应用 AI
+- 23 | MODULE 2｜总览 | 企业AI应用的四个层次
+- 24 | MODULE 2｜机会地图 | AI机会存在于四种不同深度
+- 25 | MODULE 2｜个人AI助手 | 每个人都会拥有一个AI工作伙伴
+- 26 | MODULE 2｜个人案例 | AI研究助手：从搜索信息到生成洞察
+- 27 | MODULE 2｜个人案例 | AI写作助手：从“写内容”到“共创内容”
+- 28 | MODULE 2｜个人案例 | AI会议助手：把会议变成行动闭环
+- 29 | MODULE 2｜个人案例 | AI分析助手：从看数据到发现问题
+- 30 | MODULE 2｜个人成熟度 | 个人AI能力的四级进化
+- 31 | MODULE 2｜个人系统 | 个人AI高手的秘密：不是Prompt，而是工作系统
+- 32 | MODULE 2｜团队AI工作流 | 企业最大的AI机会：复制优秀员工经验
+- 33 | MODULE 2｜团队案例 | 企业知识助手：让组织拥有共同记忆
+- 34 | MODULE 2｜团队工作流 | 从 Prompt 到 Workflow：让AI稳定工作
+- 35 | MODULE 2｜团队案例 | 销售机会管理 AI Workflow
+- 36 | MODULE 2｜团队案例 | 客服 AI 协作流程
+- 37 | MODULE 2｜团队案例 | 内容生产流水线：从个体创作到团队运营
+- 38 | MODULE 2｜团队成熟度 | 从个人使用，到流程嵌入
+- 39 | MODULE 2｜AI Agent | 为什么企业需要 Agent？
+- 40 | MODULE 2｜AI Agent | 一个 Agent 是什么？
+- 41 | MODULE 2｜场景判断 | 什么任务适合交给 Agent？
+- 42 | MODULE 2｜主案例 | 重点客户订单延期风险：传统工作为什么失效？
+- 43 | MODULE 2｜主案例 | 客户风险 Agent：如何持续工作？
+- 44 | MODULE 2｜主案例 | 客户风险处置中的人机分工
+- 45 | MODULE 2｜Agent案例 | 采购 Agent：从被动响应到主动准备
+- 46 | MODULE 2｜Agent案例 | 经营分析 Agent：从月报到持续洞察
+- 47 | MODULE 2｜概念辨析 | Agent 不是 RPA 的简单升级
+- 48 | MODULE 2｜AI Native | AI Native 企业的四种重构
+- 49 | MODULE 2｜AI Native案例 | AI CRM：从记录系统到销售决策系统
+- 50 | MODULE 2｜AI Native案例 | AI客服中心：从回答问题到完成服务
+- 51 | MODULE 2｜AI Native流程 | 从“流程驱动人”到“目标驱动协作”
+- 52 | MODULE 2｜AI Native组织 | 未来管理者：管理人 + AI Agent 团队
+- 53 | MODULE 2｜转型路线 | 从个人提效到企业重构
+- 54 | MODULE 2｜模块过渡 | 从应用场景，到落地方法
+- 55 | Module 3 | 落地 AI
+- 56 | MODULE 3｜常见失败 | 为什么很多AI项目没有业务价值？
+- 57 | MODULE 3｜机会发现 | 从岗位到任务：找到真正可改造的工作
+- 58 | MODULE 3｜核心工具 | AI Opportunity Canvas｜机会卡
+- 59 | MODULE 3｜机会卡示例 | 客户投诉处理 AI 助手
+- 60 | MODULE 3｜场景评估 | 什么工作最值得 AI 化？
+- 61 | MODULE 3｜机会地图 | 建立企业 AI 机会全景
+- 62 | MODULE 3｜机会收敛 | 从 100 个想法，到 1–2 个 PoC
+- 63 | MODULE 3｜场景选择 | AI 项目优先级矩阵
+- 64 | MODULE 3｜第一个项目 | 企业第一个 AI 项目怎么选？
+- 65 | MODULE 3｜系统观 | AI应用不是模型项目，而是业务系统项目
+- 66 | MODULE 3｜核心工具 | AI Solution Canvas｜方案画布
+- 67 | MODULE 3｜Agent设计 | 设计 Agent 的六步法
+- 68 | MODULE 3｜企业架构 | 企业级 Agent 应用架构
+- 69 | MODULE 3｜人机协同 | Human-in-the-Loop：人工控制放在哪里？
+- 70 | MODULE 3｜准备度 | 数据与知识准备：AI能力的上限来自基础质量
+- 71 | MODULE 3｜治理 | 安全与治理必须从第一天设计
+- 72 | MODULE 3｜验证价值 | 不要做 Demo，要做业务验证
+- 73 | MODULE 3｜价值评估 | AI价值的四层证据
+- 74 | MODULE 3｜ROI | AI项目价值模型
+- 75 | MODULE 3｜PoC | 4–8周 AI PoC：快速验证，而不是缩水版生产系统
+- 76 | MODULE 3｜验收 | AI项目验收清单
+- 77 | MODULE 3｜规模化 | 从一个AI案例，到企业AI能力
+- 78 | MODULE 3｜路线图 | 企业AI转型：12个月演进路径
+- 79 | MODULE 3｜行动入口 | AI Discovery Workshop：培训之后如何开始？
+- 80 | Module 4 | AI时代的人与组织
+- 81 | MODULE 4｜工作单元 | AI改变工作的基本单元
+- 82 | MODULE 4｜员工角色 | 员工从执行者，转向AI协作者
+- 83 | MODULE 4｜人才模型 | AI时代的 π 型人才
+- 84 | MODULE 4｜管理者 | 管理者的新角色：管理人 + AI团队
+- 85 | MODULE 4｜组织机制 | AI Transformation Office｜转型推动机制
+- 86 | MODULE 4｜成熟度 | 企业 AI 成熟度模型
+- 87 | WORKSHOP | 从今天开始：你的第一个 AI 行动是什么？
+- 88 | Closing | 企业AI转型，从重新设计第一项工作开始
+- 89 | Module A | 附录与工作坊工具
+- 90 | WORKSHOP | AI Opportunity Card｜机会卡
+- 91 | WORKSHOP | AI Opportunity Score｜机会评分表
+- 92 | WORKSHOP | AI Solution Canvas｜方案画布
+- 93 | WORKSHOP | Enterprise AI Case Card｜案例卡模板
+- 94 | APPENDIX｜WORKSHOP | 一天工作坊建议节奏
+- 95 | APPENDIX｜术语 | 关键术语：用业务语言理解技术概念
