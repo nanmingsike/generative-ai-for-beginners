@@ -2,6 +2,9 @@
   "name": "enterprise-ai-deck-builder",
   "private": true,
   "type": "module",
+  "scripts": {
+    "build": "node run_build.mjs"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
