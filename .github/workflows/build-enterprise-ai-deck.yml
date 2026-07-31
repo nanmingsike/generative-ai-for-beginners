@@ -1,0 +1,66 @@
+name: Build Enterprise AI Training Deck
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'tmp/enterprise-ai-deck/**'
+      - '.github/workflows/build-enterprise-ai-deck.yml'
+
+jobs:
+  build-deck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: tmp/enterprise-ai-deck/package.json
+
+      - name: Install dependencies
+        working-directory: tmp/enterprise-ai-deck
+        run: npm install --no-audit --no-fund
+
+      - name: Generate editable PPTX
+        working-directory: tmp/enterprise-ai-deck
+        run: node generate-deck.mjs
+
+      - name: Validate PPTX package and slide count
+        working-directory: tmp/enterprise-ai-deck
+        run: |
+          unzip -t '企业AI转型与应用实践_完整培训课件_V1.pptx'
+          python - <<'PY'
+          import zipfile, re
+          path = '企业AI转型与应用实践_完整培训课件_V1.pptx'
+          with zipfile.ZipFile(path) as z:
+              slides = [n for n in z.namelist() if re.fullmatch(r'ppt/slides/slide\d+\.xml', n)]
+              print('SLIDE_COUNT=', len(slides))
+              if len(slides) < 70:
+                  raise SystemExit(f'Expected at least 70 slides, got {len(slides)}')
+          PY
+
+      - name: Create PDF preview when LibreOffice is available
+        working-directory: tmp/enterprise-ai-deck
+        shell: bash
+        run: |
+          if command -v libreoffice >/dev/null 2>&1; then
+            mkdir -p preview
+            libreoffice --headless --convert-to pdf --outdir preview '企业AI转型与应用实践_完整培训课件_V1.pptx'
+          else
+            echo 'LibreOffice is not available on this runner; skipping PDF preview.'
+          fi
+
+      - name: Upload deck artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enterprise-ai-training-deck
+          path: |
+            tmp/enterprise-ai-deck/企业AI转型与应用实践_完整培训课件_V1.pptx
+            tmp/enterprise-ai-deck/preview/*.pdf
+          if-no-files-found: error
+          retention-days: 7
