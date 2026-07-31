@@ -1,0 +1,10 @@
+{
+  "name": "enterprise-ai-deck-builder",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "pptxgenjs": "^3.12.0"
+  }
+}
