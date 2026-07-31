@@ -32,12 +32,10 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-
           p = Path('generate-deck.mjs')
           lines = p.read_text().splitlines()
           out = []
           current_slide = None
-
           for line in lines:
               if re.match(r'^function\s+\w+\s*\(', line):
                   current_slide = None
@@ -47,7 +45,6 @@ jobs:
               if current_slide and current_slide != 'slide' and 'slide.' in line:
                   line = line.replace('slide.', f'{current_slide}.')
               out.append(line)
-
           p.write_text('\n'.join(out) + '\n')
           PY
 
@@ -69,23 +66,29 @@ jobs:
                   raise SystemExit(f'Expected at least 70 slides, got {len(slides)}')
           PY
 
-      - name: Create PDF preview when LibreOffice is available
+      - name: Prepare direct-open PPTX package
         working-directory: tmp/enterprise-ai-deck
-        shell: bash
         run: |
-          if command -v libreoffice >/dev/null 2>&1; then
-            mkdir -p preview
-            libreoffice --headless --convert-to pdf --outdir preview '企业AI转型与应用实践_完整培训课件_V1.pptx'
-          else
-            echo 'LibreOffice is not available on this runner; skipping PDF preview.'
-          fi
+          rm -rf pptx-package
+          mkdir -p pptx-package
+          unzip -q '企业AI转型与应用实践_完整培训课件_V1.pptx' -d pptx-package
+          test -f 'pptx-package/[Content_Types].xml'
+          test -f 'pptx-package/ppt/presentation.xml'
 
-      - name: Upload deck artifact
+      - name: Upload normal deck artifact
         uses: actions/upload-artifact@v4
         with:
           name: enterprise-ai-training-deck
-          path: |
-            tmp/enterprise-ai-deck/企业AI转型与应用实践_完整培训课件_V1.pptx
-            tmp/enterprise-ai-deck/preview/*.pdf
+          path: tmp/enterprise-ai-deck/企业AI转型与应用实践_完整培训课件_V1.pptx
           if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload direct-open PPTX package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enterprise-ai-training-deck-direct-pptx
+          path: tmp/enterprise-ai-deck/pptx-package/**
+          include-hidden-files: true
+          if-no-files-found: error
+          compression-level: 6
           retention-days: 7
