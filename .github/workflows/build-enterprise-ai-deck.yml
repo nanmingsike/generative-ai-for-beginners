@@ -7,10 +7,17 @@ on:
     paths:
       - 'tmp-enterprise-ai-deck/**'
       - '.github/workflows/build-enterprise-ai-deck.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'tmp-enterprise-ai-deck/**'
+      - '.github/workflows/build-enterprise-ai-deck.yml'
   workflow_dispatch:
 
 permissions:
   contents: write
+  pull-requests: read
 
 jobs:
   build:
@@ -96,6 +103,7 @@ jobs:
           PY
 
       - name: Commit generated deliverables to branch
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name 'ChatGPT Deck Builder'
           git config user.email 'actions@users.noreply.github.com'
